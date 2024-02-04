@@ -63,6 +63,18 @@ class Item:
         else:
             return int(args)
 
+    def __repr__(self):
+        """
+        Репрезентация полей класса
+        """
+        return f"{__class__.__name__}('{self.name}', {self.price}, {self.quantity})"
+
+    def __str__(self):
+        """
+        Отображение информации об объекте класса для пользователей
+        """
+        return f"{self.name}"
+
     def calculate_total_price(self) -> float:
         """
         Рассчитывает общую стоимость конкретного товара в магазине.
