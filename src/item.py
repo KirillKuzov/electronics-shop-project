@@ -1,6 +1,17 @@
 import csv
 
 
+class InstantiateCSVError(Exception):
+    """
+    Класс определяет пользовательское исключение.
+    """
+    def __init__(self, *args, **kwargs):
+        self.message = args[0] if args else 'Файл item.csv поврежден.'
+
+    def __str__(self):
+        return self.message
+
+
 class Item:
     """
     Класс для представления товара в магазине.
@@ -44,13 +55,22 @@ class Item:
         Класс метод для создания объектов из данных файла. Использует перехват исключений.
         """
         cls.all.clear()
-        with open(path_to_csv, newline="", encoding="windows-1251") as csvfile:
-            reader = csv.DictReader(csvfile)
-            items_objs_lst = []
-            for row in reader:
-                if len(row) == 3:
-                    items_objs_lst.append(cls(name=row["name"], price=row["price"], quantity=row["quantity"]))
-        return items_objs_lst
+        try:
+            with open(path_to_csv, newline="", encoding="windows-1251") as csvfile:
+                reader = csv.DictReader(csvfile)
+                items_objs_lst = []
+                for row in reader:
+                    if len(row) == 3:
+                        items_objs_lst.append(cls(name=row["name"], price=row["price"], quantity=row["quantity"]))
+                    else:
+                        raise InstantiateCSVError
+            return items_objs_lst
+        except FileNotFoundError:
+            print("Отсутствует файл item.csv")
+            return None
+        except InstantiateCSVError as error:
+            print(error)
+            return None
 
     @staticmethod
     def string_to_number(args: str):
@@ -97,3 +117,4 @@ class Item:
         if not isinstance(other, Item):
             raise ValueError("Складывать можно только объекты Item и дочерние от них")
         return self.quantity + other.quantity
+
