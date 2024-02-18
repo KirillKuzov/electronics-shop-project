@@ -22,14 +22,4 @@ class MixinKeyboardLang:
 
 class Keyboard(MixinKeyboardLang, Item):
     """Класс для товара клавиатура"""
-
-    @property
-    def language(self):
-        return self._language
-
     pass
-
-    @language.setter
-    def language(self, value):
-        self._language = value
-
