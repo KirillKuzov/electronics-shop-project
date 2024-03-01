@@ -3,11 +3,8 @@ from src.item import Item
 
 class MixinKeyboardLang:
     """Миксин дополнительного функционала """
-    def __init__(self, name, price, quantity):
+    def __init__(self):
         self.__language = "EN"
-        self.name = name
-        self.price = price
-        self.quantity = quantity
 
     @property
     def language(self):
@@ -20,9 +17,12 @@ class MixinKeyboardLang:
             self.__language = "RU"
         else:
             self.__language = "EN"
+        return self
 
 
 class Keyboard(MixinKeyboardLang, Item):
     """Класс для товара клавиатура"""
-    pass
+    def __init__(self, name: str, price: float, quantity: int):
+        super().__init__(name, price, quantity)
+        MixinKeyboardLang.__int__(self)
 
